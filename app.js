@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var flocknetRouter = require('./routes/flocknet');
 
@@ -26,6 +27,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// connect to mongoose
+mongoose.connect(process.env.MONGO_URL, function (err) {
+    if (err) throw err;
+});
 
 app.use('/flocknet', flocknetRouter);
 
