@@ -45,7 +45,9 @@ flocknetRouter.get('/configure', function (req, res, next) {
         var token = result.token;
         flock.callMethod('groups.list', token, {}, function (err, response) {
             if (err) throw err;
-            res.render('configure', response);
+            res.render('configure', {
+                data: response
+            });
         });
     });
 
