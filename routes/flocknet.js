@@ -78,6 +78,7 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
                                             method: 'POST',
                                             body: JSON.stringify({
                                                 text: req.body.text,
+                                                attachments: req.body.attachments,
                                                 sendAs: {
                                                     name: response[find_user].firstName + " " + response[find_user].lastName,
                                                     profileImage: response[find_user].profileImage
