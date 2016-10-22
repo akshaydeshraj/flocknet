@@ -1,4 +1,5 @@
 var express = require('express');
+var flock = require('flockos');
 var flocknetRouter = express.Router();
 var User = require('../models/User');
 
@@ -8,8 +9,12 @@ flocknetRouter.post('/webhook', function (req, res, next) {
 
     switch (req.body.name) {
         case 'app.install':
-            var user = new User(req.body);
-            user.save(console.log);
+            User.update({
+                'userId': req.body.userId
+            }, req.body, {
+                'upsert': true
+            }, console.log);
+
             break;
         case 'app.uninstall':
             break;
@@ -30,7 +35,16 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
  * Configuration URL
  */
 flocknetRouter.get('/configure', function (req, res, next) {
-    console.log(req.query);
+    var user_data = flock.verifyEventToken(req.query.flockValidationToken);
+    console.log(user_data);
+
+    User.findOne({
+        userId: user_data.userId
+    }).exec(function (err, result) {
+        var token = result.token;
+        flock.callMethod('groups.list', token, {}, console.log);
+    });
+
     res.send('Dummy Data');
 });
 
