@@ -3,6 +3,7 @@ var flock = require('flockos');
 var flocknetRouter = express.Router();
 var User = require('../models/User');
 var Group = require('../models/Group');
+var request = require('request');
 
 /* GET home page. */
 flocknetRouter.post('/webhook', function (req, res, next) {
@@ -60,6 +61,35 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
                         ...
                         }]
                      */
+                    for (var user in response) {
+                        if (user.id == userId) {
+                            // Loop through all incoming webhooks
+                            Group
+                                .find()
+                                .where('groupId').ne(req.body.to)
+                                .exec(function (err, groupArray) {
+                                    for (group in groupArray) {
+                                        request({
+                                            url: group.webhook_url,
+                                            method: 'POST',
+                                            body: {
+                                                text: req.body.text,
+                                                sendAs: {
+                                                    name: user.firstName + " " + user.lastName,
+                                                    profileImage: user.profileImage
+                                                }
+                                            }
+                                        }, function (err, response, body) {
+                                            if (error) {
+                                                console.log(error);
+                                            } else {
+                                                console.log(response.statusCode, body);
+                                            }
+                                        });
+                                    }
+                                });
+                        }
+                    }
                     console.log(response);
                 });
             });
