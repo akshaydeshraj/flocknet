@@ -116,17 +116,21 @@ flocknetRouter.post('/outgoing/:channel', function (req, res, next) {
 flocknetRouter.get('/configure', function (req, res, next) {
     var user_data = flock.verifyEventToken(req.query.flockValidationToken);
     console.log(user_data);
-    
+
     User.findOne({
         userId: user_data.userId
     }).exec(function (err, result) {
         var token = result.token;
         flock.callMethod('groups.list', token, {}, function (err, response) {
             if (err) throw err;
-            res.render('configure', {
-                data: response,
-                userId: user_data.userId
+            Group.find().distinct('f_channel', function (err, re) {
+                res.render('configure', {
+                    data: response,
+                    userId: user_data.userId,
+                    channels: re
+                });
             });
+
         });
     });
 
