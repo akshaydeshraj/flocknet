@@ -5,9 +5,6 @@ var User = require('../models/User');
 var Group = require('../models/Group');
 var request = require('request');
 
-flock.setAppId(process.env.FLOCK_APP_ID);
-flock.setAppSecret(process.env.FLOCK_APP_SECRET);
-
 flocknetRouter.post('/webhook', function (req, res, next) {
     console.log(req.body);
 
@@ -114,6 +111,8 @@ flocknetRouter.post('/outgoing/:channel', function (req, res, next) {
  * Configuration URL
  */
 flocknetRouter.get('/configure', function (req, res, next) {
+    flock.setAppId(process.env.FLOCK_APP_ID);
+    flock.setAppSecret(process.env.FLOCK_APP_SECRET);
     var user_data = flock.verifyEventToken(req.query.flockValidationToken);
     console.log(user_data);
 
