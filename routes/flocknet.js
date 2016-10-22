@@ -169,7 +169,10 @@ flocknetRouter.get('/public-channels', function (req, res, next) {
         var me = [];
         for (kd in re) {
             if (re[kd]._id) {
-                var temp = re[kd]._id + ' ' + re[kd].count + ' team(s) subscribed';
+                var temp = {
+                    text: re[kd]._id + ' ' + re[kd].count + ' team(s) subscribed',
+                    name: re[kd]._id
+                };
                 me.push(temp);
             }
         }

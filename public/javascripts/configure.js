@@ -3,14 +3,17 @@ $(document).ready(function () {
     // TODO : Endpoint to get channels here
     var channelDisplay = [];
     var channelNames = {};
-    $.get('https://d64f278b.ngrok.io/flocknet/public-channels', null, function (data) {
+    $.get('https://d64f278b.ngrok.io/flocknet/public-channels', function (data) {
 
         $.each(data, function (index, jsonObject) {
+            console.log(jsonObject);
             channelDisplay.push(jsonObject.text);
             channelNames[jsonObject.text] = jsonObject.name;
         });
 
-        $("#channels").typeahead({source: channelDisplay});
+        $("#channels").typeahead({
+            source: channelDisplay
+        });
 
     }, 'json');
 
@@ -40,7 +43,7 @@ $(document).ready(function () {
         console.log('jsonObject', jsonObjectToPost);
 
         $.post("https://d64f278b.ngrok.io/flocknet/subscribe-channel",
-            jsonObjectToPost)
+                jsonObjectToPost)
             .done(function (msg) {
                 console.log('Message', msg);
             })
