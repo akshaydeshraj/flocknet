@@ -42,10 +42,12 @@ flocknetRouter.get('/configure', function (req, res, next) {
         userId: user_data.userId
     }).exec(function (err, result) {
         var token = result.token;
-        flock.callMethod('groups.list', token, {}, console.log);
+        flock.callMethod('groups.list', token, {}, function (err, response) {
+            if (err) throw err;
+            res.render('configure', response);
+        });
     });
 
-    res.send('Dummy Data');
 });
 
 module.exports = flocknetRouter;
