@@ -43,9 +43,9 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
     }).exec(
         function (err, result) {
             User.find({
-                userId: result.associated_user
+                userId: result[0].associated_user
             }).exec(function (err, r) {
-                flock.callMethod('groups.getMembers', r.token, {
+                flock.callMethod('groups.getMembers', r[0].token, {
                     groupId: req.body.to
                 }, function (err, response) {
                     /**
@@ -61,27 +61,34 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
                         ...
                         }]
                      */
-                    for (var user in response) {
-                        if (user.id == userId) {
+                    for (user in response) {
+                        console.log(user);
+                        if (response[user].id == req.body.from) {
                             // Loop through all incoming webhooks
+                            console.log('****************************88', response[user]);
+                            var find_user = user;
                             Group
                                 .find()
                                 .where('groupId').ne(req.body.to)
                                 .exec(function (err, groupArray) {
+                                    console.log(err, groupArray)
                                     for (group in groupArray) {
                                         request({
-                                            url: group.webhook_url,
+                                            url: groupArray[group].webhook_url,
                                             method: 'POST',
-                                            body: {
+                                            body: JSON.stringify({
                                                 text: req.body.text,
                                                 sendAs: {
-                                                    name: user.firstName + " " + user.lastName,
-                                                    profileImage: user.profileImage
+                                                    name: response[find_user].firstName + " " + response[find_user].lastName,
+                                                    profileImage: response[find_user].profileImage
                                                 }
+                                            }),
+                                            header: {
+                                                'content-type': 'application/json'
                                             }
                                         }, function (err, response, body) {
-                                            if (error) {
-                                                console.log(error);
+                                            if (err) {
+                                                console.log(err);
                                             } else {
                                                 console.log(response.statusCode, body);
                                             }
