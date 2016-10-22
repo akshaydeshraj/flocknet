@@ -43,9 +43,10 @@ $(document).ready(function () {
         console.log('jsonObject', jsonObjectToPost);
 
         $.post("https://d64f278b.ngrok.io/flocknet/subscribe-channel",
-                jsonObjectToPost)
+            jsonObjectToPost)
             .done(function (msg) {
                 console.log('Message', msg);
+                $("#message").text(msg);
             })
             .fail(function (xhr, status, error) {
                 console.log('JSON Object', jsonObjectToPost);
