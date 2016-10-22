@@ -152,4 +152,25 @@ flocknetRouter.post('/subscribe-channel', function (req, res, next) {
 
 });
 
+/**
+ * public channel URL
+ */
+flocknetRouter.get('/public-channels', function (req, res, next) {
+    var agg = [{
+        $group: {
+            _id: "$f_channel",
+            total: {
+                $sum: 1
+            }
+        }
+    }];
+
+    Group.aggregate(agg, function (err, re) {
+        res.send({
+            data: re
+        });
+    });
+
+});
+
 module.exports = flocknetRouter;
