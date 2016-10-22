@@ -159,7 +159,7 @@ flocknetRouter.get('/public-channels', function (req, res, next) {
     var agg = [{
         $group: {
             _id: "$f_channel",
-            total: {
+            count: {
                 $sum: 1
             }
         }
