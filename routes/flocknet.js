@@ -11,8 +11,18 @@ flocknetRouter.post('/webhook', function (req, res, next) {
             var user = new User(req.body);
             user.save(console.log);
             break;
+        case 'app.uninstall':
+            break;
     }
 
+    res.sendStatus(200);
+});
+
+/**
+ * Outgoing Webhook
+ */
+flocknetRouter.post('/outgoing', function (req, res, next) {
+    console.log(req.body);
     res.sendStatus(200);
 });
 
