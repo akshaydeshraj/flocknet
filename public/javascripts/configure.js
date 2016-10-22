@@ -1,8 +1,17 @@
 $(document).ready(function () {
 
     // TODO : Endpoint to get channels here
-    $.get('https://d64f278b.ngrok.io/flocknet/public-channels', function (data) {
-        $("#channels").typeahead({source: data});
+    var channelDisplay = [];
+    var channelNames = {};
+    $.get('https://d64f278b.ngrok.io/flocknet/public-channels', null, function (data) {
+
+        $.each(data, function (index, jsonObject) {
+            channelDisplay.push(jsonObject.text);
+            channelNames[jsonObject.text] = jsonObject.name;
+        });
+
+        $("#channels").typeahead({source: channelDisplay});
+
     }, 'json');
 
     $(".btn").click(function (event) {
@@ -14,7 +23,9 @@ $(document).ready(function () {
         var groupId = selectedGroup.attr('id');
 
         // Find out public group subscribed to
-        var sharedGroupName = $("#channels").val();
+        var displayedItem = $("#channels").val();
+        var x = channelNames[displayedItem];
+        var sharedGroupName = x != null ? x : displayedItem;
 
         var incomingUrl = $("#inputIWebhook").val();
 
