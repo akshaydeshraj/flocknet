@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     // TODO : Endpoint to get channels here
-    $.get('', function (data) {
+    $.get('https://d64f278b.ngrok.io/flocknet/public-channels', function (data) {
         $("#channels").typeahead({source: data});
     }, 'json');
 
