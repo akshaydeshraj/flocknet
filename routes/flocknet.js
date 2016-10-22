@@ -181,4 +181,12 @@ flocknetRouter.get('/public-channels', function (req, res, next) {
 
 });
 
+/**
+ * Action URL
+ */
+flocknetRouter.post('/action', function (req, res, next) {
+    console.log(req.body);
+    res.send('hello');
+});
+
 module.exports = flocknetRouter;
