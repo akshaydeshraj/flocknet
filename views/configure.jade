@@ -5,11 +5,22 @@ block content
 
     .container
         form
-            .form-group
-                label(for="sel1") Select Group
-                select.form-control#sel1
-                    for item in data
-                        option(id="#{item.id}") #{item.name}
             .form-group.row
                 .col-sm-10
-                    button.btn.btn-primary(type='submit') Submit
+                    label(for="sel1") Select Group
+                    select.form-control#sel1
+                        for item in data
+                            option(id="#{item.id}") #{item.name}
+
+            .form-group.row
+                .col-sm-10
+                    label(for="inputIWebhook") Enter Incoming Webhook Url
+                .col-sm-10
+                    input#inputIWebhook.form-control(type='url', placeholder='Incoming Webhook Url')
+
+            .form-group.row
+                .col-sm-10
+                    button.btn.btn-primary Submit
+
+    script.
+        userId = "#{userId}"
