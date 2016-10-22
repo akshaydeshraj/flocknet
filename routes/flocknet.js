@@ -166,9 +166,14 @@ flocknetRouter.get('/public-channels', function (req, res, next) {
     }];
 
     Group.aggregate(agg, function (err, re) {
-        res.send({
-            data: re
-        });
+        var me = [];
+        for (kd in re) {
+            if (re[kd]._id) {
+                var temp = re[kd]._id + ' ' + re[kd].count + ' team(s) subscribed';
+                me.push(temp);
+            }
+        }
+        res.send(me);
     });
 
 });
