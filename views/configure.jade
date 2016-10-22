@@ -2,11 +2,8 @@ extends layout
 
 block content
     h3 Flocknet Configuration
-    fieldset.form-group
-        legend Select Your Group
-            each item in data
-                .form-check
-                    label.form-check-label
-                        input(type="radio", class="form-check-input", name="optionsRadios", id="optionsRadios1", value="option1")
-                        |  #{item.name}
-
+    .form-group
+        label(for="sel1") Select Group
+        select.form-control#sel1
+            for item in data
+                option(id="#{item.id}") #{item.name}
