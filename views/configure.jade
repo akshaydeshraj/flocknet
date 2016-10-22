@@ -8,9 +8,8 @@ block content
             .form-group.row
                 .col-sm-10
                     label(for="channels") Select Public Group To Add To Your Team
-                    select.form-control#channels
-                        for item in channels
-                            option #{item.name}
+                .col-sm-10
+                    input#channels.form-control(type='text', placeholder='Public Group', data-provide="typeahead", autocomplete="off")
 
             .form-group.row
                 .col-sm-10

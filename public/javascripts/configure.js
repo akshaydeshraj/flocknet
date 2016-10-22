@@ -1,9 +1,12 @@
 $(document).ready(function () {
 
+    // TODO : Endpoint to get channels here
+    $.get('', function (data) {
+        $("#channels").typeahead({source: data});
+    }, 'json');
+
     $(".btn").click(function (event) {
         event.preventDefault();
-
-        console.log('test');
 
         // Find out group selected
         var selectedGroup = $("#sel1").find(":selected");
@@ -11,7 +14,7 @@ $(document).ready(function () {
         var groupId = selectedGroup.attr('id');
 
         // Find out public group subscribed to
-        var sharedGroupName = $("#channels").find(":selected").text();
+        var sharedGroupName = $("#channels").val();
 
         var incomingUrl = $("#inputIWebhook").val();
 
@@ -35,7 +38,7 @@ $(document).ready(function () {
                 console.log('XHR', xhr);
                 console.log('status', status);
                 console.log('error', error);
-            })
+            });
 
     });
 });
