@@ -5,7 +5,7 @@ var UserSchema = new Schema({
     userToken: String,
     token: String,
     name: String,
-    userid: String
+    userId: String
 });
 
 // return the model
