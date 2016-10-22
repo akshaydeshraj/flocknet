@@ -26,4 +26,12 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
     res.sendStatus(200);
 });
 
+/**
+ * Configuration URL
+ */
+flocknetRouter.get('/configure', function (req, res, next) {
+    console.log(req.query);
+    res.send('Dummy Data');
+});
+
 module.exports = flocknetRouter;
