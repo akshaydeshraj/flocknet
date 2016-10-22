@@ -2,6 +2,7 @@ var express = require('express');
 var flock = require('flockos');
 var flocknetRouter = express.Router();
 var User = require('../models/User');
+var Group = require('../models/Group');
 
 /* GET home page. */
 flocknetRouter.post('/webhook', function (req, res, next) {
@@ -46,6 +47,20 @@ flocknetRouter.get('/configure', function (req, res, next) {
             if (err) throw err;
             res.render('configure', response);
         });
+    });
+
+});
+
+/**
+ * Outgoing Webhook
+ */
+flocknetRouter.post('/subscribe-channel', function (req, res, next) {
+    User.update({
+        'groupId': req.body.userId
+    }, req.body, {
+        'upsert': true
+    }, function (err, result) {
+        res.sendStatus(200);
     });
 
 });
