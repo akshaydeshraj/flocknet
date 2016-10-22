@@ -5,7 +5,8 @@ var GroupSchema = new Schema({
     groupId: String,
     f_channel: String,
     group_name: String,
-    webhook_url: String
+    webhook_url: String,
+    associated_user: String
 });
 
 // return the model
