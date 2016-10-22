@@ -95,15 +95,15 @@ flocknetRouter.get('/configure', function (req, res, next) {
  * Outgoing Webhook
  */
 flocknetRouter.post('/subscribe-channel', function (req, res, next) {
+    console.log("*********************/subscribe-channel body****************: ", req.body);
     Group.update({
-        'groupId': req.body.userId
+        'groupId': req.body.groupId
     }, req.body, {
         'upsert': true
     }, function (err, result) {
+        console.log("****************Group collection Operation****************: ", err, result);
         res.sendStatus(200);
     });
-
-
 
 });
 
