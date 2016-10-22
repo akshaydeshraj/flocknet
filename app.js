@@ -10,6 +10,12 @@ var users = require('./routes/users');
 
 var app = express();
 
+// flock setup
+var flock = require('flockos');
+
+flock.setAppId(process.env.FLOCK_APP_ID);
+flock.setAppSecret(process.env.FLOCK_APP_SECRET);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
