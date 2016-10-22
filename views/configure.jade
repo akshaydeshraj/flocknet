@@ -7,7 +7,14 @@ block content
         form
             .form-group.row
                 .col-sm-10
-                    label(for="sel1") Select Group
+                    label(for="channels") Select Public Group To Add To Your Team
+                    select.form-control#channels
+                        for item in channels
+                            option #{item.name}
+
+            .form-group.row
+                .col-sm-10
+                    label(for="sel1") Select Group From Your Flock Team
                     select.form-control#sel1
                         for item in data
                             option(id="#{item.id}") #{item.name}

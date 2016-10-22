@@ -37,7 +37,7 @@ flocknetRouter.post('/webhook', function (req, res, next) {
   text: 'hi',
   uid: '1477137822201-RWEUNX-apollo-z6' }
  */
-flocknetRouter.post('/outgoing', function (req, res, next) {
+flocknetRouter.post('/outgoing/:channel', function (req, res, next) {
     console.log(req.body);
     if (req.body.type !== 'GROUPCHAT') res.send();
     Group.find({
@@ -72,6 +72,7 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
                             Group
                                 .find()
                                 .where('groupId').ne(req.body.to)
+                                .where('f_channel', req.params.channel)
                                 .exec(function (err, groupArray) {
                                     console.log(err, groupArray)
                                     for (group in groupArray) {
@@ -115,7 +116,7 @@ flocknetRouter.post('/outgoing', function (req, res, next) {
 flocknetRouter.get('/configure', function (req, res, next) {
     var user_data = flock.verifyEventToken(req.query.flockValidationToken);
     console.log(user_data);
-
+    
     User.findOne({
         userId: user_data.userId
     }).exec(function (err, result) {
@@ -142,7 +143,8 @@ flocknetRouter.post('/subscribe-channel', function (req, res, next) {
         'upsert': true
     }, function (err, result) {
         console.log("****************Group collection Operation****************: ", err, result);
-        res.sendStatus(200);
+        res.send("Add this as your outgoing webhook " +
+            "https://d64f278b.ngrok.io/flocknet/outgoing/" + req.body.f_channel);
     });
 
 });

@@ -10,11 +10,14 @@ $(document).ready(function () {
         var groupName = selectedGroup.text();
         var groupId = selectedGroup.attr('id');
 
+        // Find out public group subscribed to
+        var sharedGroupName = $("#channels").find(":selected").text();
+
         var incomingUrl = $("#inputIWebhook").val();
 
         var jsonObjectToPost = {
             groupId: groupId,
-            f_channel: "hackathon",
+            f_channel: sharedGroupName,
             group_name: groupName,
             webhook_url: incomingUrl,
             associated_user: userId
