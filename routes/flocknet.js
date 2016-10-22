@@ -152,4 +152,30 @@ flocknetRouter.post('/subscribe-channel', function (req, res, next) {
 
 });
 
+/**
+ * public channel URL
+ */
+flocknetRouter.get('/public-channels', function (req, res, next) {
+    var agg = [{
+        $group: {
+            _id: "$f_channel",
+            count: {
+                $sum: 1
+            }
+        }
+    }];
+
+    Group.aggregate(agg, function (err, re) {
+        var me = [];
+        for (kd in re) {
+            if (re[kd]._id) {
+                var temp = re[kd]._id + ' ' + re[kd].count + ' team(s) subscribed';
+                me.push(temp);
+            }
+        }
+        res.send(me);
+    });
+
+});
+
 module.exports = flocknetRouter;
