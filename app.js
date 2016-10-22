@@ -7,14 +7,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var flocknetRouter = require('./routes/flocknet');
+var flocknetRouter2 = require('./routes/flocknet2');
 
 var app = express();
-
-// flock setup
-var flock = require('flockos');
-
-flock.setAppId(process.env.FLOCK_APP_ID);
-flock.setAppSecret(process.env.FLOCK_APP_SECRET);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,6 +37,7 @@ mongoose.connect(process.env.MONGO_URL, function (err) {
 });
 
 app.use('/flocknet', flocknetRouter);
+app.use('/flocknet2', flocknetRouter2);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
