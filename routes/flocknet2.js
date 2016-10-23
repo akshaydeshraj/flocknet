@@ -151,4 +151,30 @@ flocknetRouter.post('/subscribe-channel', function (req, res, next) {
 
 });
 
+/**
+ * Configuration URL action
+ */
+flocknetRouter.get('/configure-action', function (req, res, next) {
+    flock.setAppId(process.env.FLOCK_APP_ID2);
+    flock.setAppSecret(process.env.FLOCK_APP_SECRET2);
+    var user_data = flock.verifyEventToken(req.query.flockEventToken);
+    console.log(user_data);
+
+    User.findOne({
+        userId: user_data.userId
+    }).exec(function (err, result) {
+        var token = result.token;
+        flock.callMethod('groups.list', token, {}, function (err, response) {
+            if (err) throw err;
+            res.render('configure', {
+                data: response,
+                userId: user_data.userId,
+                channel: req.query.channel
+            });
+
+        });
+    });
+
+});
+
 module.exports = flocknetRouter;
