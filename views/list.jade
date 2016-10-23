@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    h3 Available Public Groups
+
+    .container
+        ul.list-group
+            for item in data
+                li.list-group-item
+                    span.badge #{item.count}
+                    #{item.name}

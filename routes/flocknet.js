@@ -156,6 +156,27 @@ flocknetRouter.post('/subscribe-channel', function (req, res, next) {
  * public channel URL
  */
 flocknetRouter.get('/public-channels', function (req, res, next) {
+
+    getPublicChannels(function (err, result) {
+        if (err) throw err;
+        res.send(result);
+    });
+
+});
+
+/**
+ * Action URL
+ */
+flocknetRouter.get('/action', function (req, res, next) {
+    console.log(req.body);
+    getPublicChannels(function (err, result) {
+        if (err) throw err;
+        res.render('list', {data: result});
+    });
+});
+
+function getPublicChannels(callback) {
+
     var agg = [{
         $group: {
             _id: "$f_channel",
@@ -171,22 +192,14 @@ flocknetRouter.get('/public-channels', function (req, res, next) {
             if (re[kd]._id) {
                 var temp = {
                     text: re[kd]._id + ' ' + re[kd].count + ' team(s) subscribed',
-                    name: re[kd]._id
+                    name: re[kd]._id,
+                    count: re[kd].count
                 };
                 me.push(temp);
             }
         }
-        res.send(me);
+        callback(err, me);
     });
-
-});
-
-/**
- * Action URL
- */
-flocknetRouter.post('/action', function (req, res, next) {
-    console.log(req.body);
-    res.send('hello');
-});
+}
 
 module.exports = flocknetRouter;
