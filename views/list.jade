@@ -1,11 +1,9 @@
 extends layout
 
 block content
-    h3 Available Public Groups
-
-    .container
-        ul.list-group
-            for item in data
-                li.list-group-item
-                    span.badge #{item.count}
-                    #{item.name}
+    h6.col-xs-10 Available Public Groups
+    ul.list-group
+        for item in data
+            li.list-group-item.col-xs-10
+                span.tag.tag-default.tag-pill.float-xs-right #{item.count}
+                | #{item.name}
