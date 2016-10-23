@@ -172,11 +172,6 @@ flocknetRouter.get('/public-channels', function (req, res, next) {
  * Action URL
  */
 flocknetRouter.get('/action', function (req, res, next) {
-
-    flock.setAppId(process.env.FLOCK_APP_ID);
-    flock.setAppSecret(process.env.FLOCK_APP_SECRET);
-    var user_data = flock.verifyEventToken(req.query.flockEventToken);
-    console.log(user_data);
     getPublicChannels(function (err, result) {
         if (err) throw err;
         res.render('list', {
