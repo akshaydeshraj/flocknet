@@ -10,4 +10,10 @@ var GroupSchema = new Schema({
 });
 
 // return the model
+GroupSchema.index({
+    groupId: 1,
+    f_channel: 1
+}, {
+    unique: true
+});
 module.exports = mongoose.model('Group', GroupSchema);

@@ -146,6 +146,10 @@ flocknetRouter.post('/subscribe-channel', function (req, res, next) {
         'upsert': true
     }, function (err, result) {
         console.log("****************Group collection Operation****************: ", err, result);
+        if (err) {
+            res.status(400);
+            return res.send("Sorry this group is subscribed to an Another Channel");
+        }
         res.send("Add this as your outgoing webhook " +
             "https://d64f278b.ngrok.io/flocknet/outgoing/" + req.body.f_channel);
     });
@@ -168,10 +172,17 @@ flocknetRouter.get('/public-channels', function (req, res, next) {
  * Action URL
  */
 flocknetRouter.get('/action', function (req, res, next) {
-    console.log(req.body);
+
+    flock.setAppId(process.env.FLOCK_APP_ID);
+    flock.setAppSecret(process.env.FLOCK_APP_SECRET);
+    var user_data = flock.verifyEventToken(req.query.flockEventToken);
+    console.log(user_data);
     getPublicChannels(function (err, result) {
         if (err) throw err;
-        res.render('list', {data: result});
+        res.render('list', {
+            data: result,
+            v_token: req.query.flockEventToken
+        });
     });
 });
 
@@ -201,5 +212,32 @@ function getPublicChannels(callback) {
         callback(err, me);
     });
 }
+
+/**
+ * Configuration URL action
+ */
+flocknetRouter.get('/configure-action', function (req, res, next) {
+    flock.setAppId(process.env.FLOCK_APP_ID);
+    flock.setAppSecret(process.env.FLOCK_APP_SECRET);
+    var user_data = flock.verifyEventToken(req.query.flockEventToken);
+    console.log(user_data);
+
+    User.findOne({
+        userId: user_data.userId
+    }).exec(function (err, result) {
+        console.log('result', result);
+        var token = result.token;
+        flock.callMethod('groups.list', token, {}, function (err, response) {
+            if (err) throw err;
+            res.render('configure', {
+                data: response,
+                userId: user_data.userId,
+                channel: req.query.channel
+            });
+
+        });
+    });
+
+});
 
 module.exports = flocknetRouter;

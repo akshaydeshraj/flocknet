@@ -146,7 +146,12 @@ flocknetRouter.post('/subscribe-channel', function (req, res, next) {
         'upsert': true
     }, function (err, result) {
         console.log("****************Group collection Operation****************: ", err, result);
-        res.sendStatus(200);
+        if (err) {
+            res.status(400);
+            return res.send("Sorry this group is subscribed to an Another Channel");
+        }
+        res.send("Add this as your outgoing webhook " +
+            "https://d64f278b.ngrok.io/flocknet2/outgoing/" + req.body.f_channel);
     });
 
 });
