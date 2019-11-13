@@ -13,7 +13,7 @@
     "flockos": "github:flockchat/flockos-node-sdk#0.0.2",
     "jade": "~1.11.0",
     "mongoose": "^4.6.4",
-    "morgan": "~1.7.0",
+    "morgan": "~1.9.1",
     "request": "^2.75.0",
     "serve-favicon": "~2.3.0"
   }
